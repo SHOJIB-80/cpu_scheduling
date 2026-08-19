@@ -195,9 +195,3 @@ The repository does not include an explicit author or maintainer note in the sou
 This project implements classic scheduling algorithms commonly studied in operating systems courses. No external code or third-party libraries are required.
 
 ---
-
-If you want, I can:
-- Add example input files and a non-interactive mode (read processes from a file),
-- Add a build script (Makefile) and CI checks,
-- Create unit tests for the scheduling functions,
-- Or add a LICENSE and Author section — tell me which you'd prefer.
