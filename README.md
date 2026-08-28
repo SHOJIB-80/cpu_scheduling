@@ -1,77 +1,67 @@
-# cpu_scheduling
+# CPU Scheduling Simulator
 
-Interactive command-line CPU scheduling simulator implemented in C. It runs multiple classic process-scheduling algorithms, prints a Gantt chart and per-process metrics (completion, waiting, turnaround), and can compare algorithms by average waiting time.
+An interactive command-line CPU scheduling simulator implemented in C that demonstrates and compares classic process-scheduling algorithms commonly studied in operating systems courses.
 
 ## Overview
 
-cpu_scheduling is a small educational simulator for CPU scheduling algorithms. It is intended for students and developers who want to experiment with and compare scheduling strategies (FCFS, SJF, SRTF, Round Robin, Priority, and Round Robin with Priority) using custom process arrival times, burst times, and priorities.
+This project is an educational tool that allows users to simulate and analyze various CPU scheduling algorithms. The application provides an interactive command-line interface where users can input process details and run multiple scheduling strategies to visualize execution order, calculate performance metrics, and compare algorithm efficiency.
 
 ## Features
 
-- Interactive CLI program (single executable).
-- Implements these scheduling algorithms:
+- **Interactive CLI interface** with menu-driven algorithm selection
+- **Six scheduling algorithms**:
   - FCFS (First-Come, First-Served)
   - SJF (Shortest Job First) — non-preemptive
   - SRTF (Shortest Remaining Time First) — preemptive
-  - Round Robin (time quantum)
-  - Priority Scheduling — non-preemptive (lower number = higher priority)
+  - Round Robin with configurable time quantum
+  - Priority Scheduling — non-preemptive
   - Round Robin with Priority
-- Prints Gantt chart (text) showing execution segments including idle times.
-- Shows per-process metrics: PID, arrival, burst, (priority), completion time, waiting time, turnaround time.
-- Reports average waiting time and average turnaround time.
-- Option to compare any two algorithms by average waiting time.
+- **Gantt chart visualization** displaying process execution segments and idle times
+- **Per-process metrics** including arrival time, burst time, completion time, waiting time, and turnaround time
+- **Summary statistics** showing average waiting time and average turnaround time
+- **Algorithm comparison** functionality to directly compare average waiting times between any two algorithms
 
-## Tech stack
+## Technology Stack
 
-- Language: C
-- Build tools: gcc or clang (any standard C compiler)
-- No external libraries or runtime dependencies
+| Component | Technology  |
+| --------- | ----------- |
+| Language  | C (C99)     |
+| Compiler  | GCC/Clang   |
+| Build     | Direct compilation |
+| Platform  | POSIX (Linux, macOS, Windows with WSL) |
 
-## Repository structure
+## Project Structure
 
-```text
-/
-├── cpu_scheduling_simulator.c   # Main program (all logic in one C file)
-└── README.md                    # This file
+```
+cpu_scheduling/
+├── cpu_scheduling_simulator.c    # Main program with all scheduling logic
+└── README.md                     # Documentation
 ```
 
-How it fits together:
-- cpu_scheduling_simulator.c contains:
-  - data structure `Process` for process state,
-  - implementations for each algorithm (functions: `fcfs`, `sjf`, `srtf`, `roundRobin`, `priorityScheduling`, `priorityRoundRobin`),
-  - helpers for building and printing a Gantt chart and results,
-  - an interactive `main()` loop which prompts the user for input and runs algorithms.
+The single C source file contains:
+- `Process` data structure for managing process state
+- Implementations of all six scheduling algorithms
+- Gantt chart generation and display functions
+- Results display with per-process metrics
+- Interactive `main()` loop for user input and algorithm execution
 
-## Requirements / Prerequisites
+## Installation and Build
 
-- A C compiler (gcc or clang). Example: gcc version or clang supporting C99.
-- POSIX-like terminal (Linux, macOS, WSL). The program is standard console I/O and should also work on Windows if compiled with an appropriate toolchain.
-
-No external libraries, build systems, or runtime services are required.
-
-## Installation (build)
-
-Clone the repository and compile the single C source file:
+Clone the repository and compile:
 
 ```bash
 git clone https://github.com/SHOJIB-80/cpu_scheduling.git
 cd cpu_scheduling
-
-# Compile with GCC (recommended flags)
 gcc -std=c99 -O2 -Wall cpu_scheduling_simulator.c -o cpu_scheduling_simulator
 ```
 
-You can also use clang:
+Alternatively, using Clang:
 
 ```bash
 clang -std=c99 -O2 -Wall cpu_scheduling_simulator.c -o cpu_scheduling_simulator
 ```
 
-## Configuration
-
-No configuration files or environment variables are required. All inputs are provided interactively at runtime.
-
-## Running the program
+## Running the Program
 
 Start the simulator:
 
@@ -79,8 +69,9 @@ Start the simulator:
 ./cpu_scheduling_simulator
 ```
 
-The program shows a menu:
+The application displays a main menu with eight options:
 
+```
 1. FCFS
 2. SJF (Non-Preemptive)
 3. SRTF (Preemptive)
@@ -89,31 +80,31 @@ The program shows a menu:
 6. Round Robin with Priority
 7. Compare Two Algorithms
 8. Exit
+```
 
-Follow prompts to enter:
-- Number of processes (integer, 1–50)
-- For each process: burst time (positive integer), arrival time (non-negative integer), priority (integer where smaller means higher priority)
-- For Round Robin variants: time quantum (positive integer) when requested
+## Usage
 
-The program will print a textual Gantt chart, then a table with per-process metrics and the average waiting/turnaround times.
+### Running a Single Algorithm
 
-## Input details / Usage
+1. Select an algorithm (1–6) from the main menu
+2. Enter the number of processes (1–50)
+3. For each process, provide:
+   - Burst time (positive integer > 0)
+   - Arrival time (non-negative integer ≥ 0)
+   - Priority value (integer; lower values indicate higher priority)
+4. For Round Robin variants, enter the time quantum (positive integer > 0)
+5. The program displays the Gantt chart and per-process metrics
 
-When prompted by input routines, the program expects integers:
+### Comparing Algorithms
 
-- Number of processes: must be 1..50
-- For each process i:
-  - Process i burst time: positive integer (> 0)
-  - Process i arrival time: non-negative integer (>= 0)
-  - Process i priority: integer (lower number = higher priority)
-- Time Quantum (for Round Robin / comparisons): positive integer (> 0)
+1. Select option 7 from the main menu
+2. Input process details as above
+3. Select the first algorithm to run
+4. Select the second algorithm to run
+5. If either algorithm requires a time quantum, enter it
+6. The program runs both algorithms and displays a side-by-side comparison of average waiting times, indicating which algorithm performed better
 
-Notes:
-- The program enforces simple checks for burst (>0) and arrival (>=0). It does not validate non-integer input (entering non-integers may cause undefined behavior).
-- Maximum number of processes is 50 (constant MAXP in source).
-- Maximum number of Gantt segments is 5000 (constant MAXG in source).
-
-Example (interactive prompts shown; user input in bold):
+### Example Interaction
 
 ```
 Enter your choice: 1
@@ -132,66 +123,65 @@ Process 3 arrival time: 4
 Process 3 priority (lower number = higher priority): 3
 ```
 
-After entering the data, the program prints a Gantt chart and a table similar to:
+The output includes a Gantt chart and results table:
 
-- Gantt chart (example format):
+```
+Gantt Chart:
+| P1    | P2    | P3    |
+0       5       8       10
 
-  | P1 | P2 | P3 |
-  0     5     8     10
+PID  Arr  Burst  Comp  Wait  Turn
+1    0    5      5     0     5
+2    2    3      8     3     6
+3    4    2      10    4     6
 
-- Table header (when priority shown):
-  PID  Arr  Burst  Pri  Comp  Wait  Turn
+Average Waiting Time: 2.33
+Average Turnaround Time: 5.67
+```
 
-- Average Waiting Time and Average Turnaround Time printed below the table.
+## Input Specifications
 
-## Algorithms / Implementation notes
+- **Number of processes**: Integer from 1 to 50
+- **Burst time**: Positive integer (> 0)
+- **Arrival time**: Non-negative integer (≥ 0)
+- **Priority**: Integer value (lower number = higher priority)
+- **Time Quantum**: Positive integer (> 0), required for Round Robin and Round Robin with Priority
 
-- FCFS: sorts processes by arrival time and schedules them in arrival order.
-- SJF (non-preemptive): selects the available process with the smallest burst time.
-- SRTF: preemptive shortest-remaining-time-first — scheduling decisions occur each time unit.
-- Round Robin: uses a queue; processes arriving while the CPU is running are enqueued; the time quantum is applied.
-- Priority Scheduling: non-preemptive; lower priority value has higher precedence.
-- Round Robin with Priority: selects among arrived processes with the best (lowest) priority and cycles among equal-priority processes.
+**Note:** The program performs basic validation for positive burst times and non-negative arrival times. Non-integer input is not validated and may cause undefined behavior.
 
-Core functions in the source:
-- runAlgorithm(choice, original[], n, tq) — dispatches to chosen algorithm.
-- showResults(...) — prints Gantt chart and metrics for a finished run.
-- inputProcesses(...) — interactive input and basic validation.
+## Algorithm Details
 
-## Limitations / Known issues
+- **FCFS**: Processes are executed in the order of their arrival times
+- **SJF (Non-Preemptive)**: Among available processes, the one with the smallest burst time is selected
+- **SRTF (Preemptive)**: Scheduling decisions occur each time unit, selecting the process with the smallest remaining time
+- **Round Robin**: Processes are executed in cycles; each process runs for at most the time quantum before being re-queued
+- **Priority Scheduling (Non-Preemptive)**: Among available processes, the one with the lowest priority value is selected
+- **Round Robin with Priority**: Processes with the best (lowest) priority value are selected and cycled through with the time quantum constraint
 
-- Single-file, synchronous CLI tool intended for learning/demonstration — not designed as a library or service.
-- Input must be integers — non-integer input is not guarded against and may produce undefined behavior.
-- No automated tests are included.
-- No persistence/export: results are printed to standard output only.
-- No formal command-line flags; program is purely interactive.
-- Max processes: 50. Max Gantt segments: 5000.
+## Constraints and Limitations
 
-## Testing
+- Maximum of 50 processes per simulation
+- Maximum of 5000 Gantt chart segments
+- Non-integer input is not validated and may result in undefined behavior
+- No automated test suite included
+- Results are output to the console only; no export or persistence functionality
+- No command-line arguments; program is purely interactive
+- Single-threaded, synchronous execution
 
-There are no unit tests included in this repository. To exercise the program, compile and run it and try several algorithm choices and process sets (including edge cases like idle CPU periods).
+## Requirements
 
-## Contributing
-
-If you'd like to contribute:
-
-1. Fork the repository.
-2. Create a descriptive branch: git checkout -b fix/feature-name
-3. Make changes and test locally.
-4. Open a pull request describing the change and motivation.
-
-Please include reproducible steps and test cases when proposing behavioral changes (e.g., changes to scheduling logic).
+- C compiler supporting C99 standard (GCC or Clang)
+- POSIX-compatible terminal environment (Linux, macOS, WSL on Windows)
+- Standard C library (no external dependencies)
 
 ## License
 
-No license file is present in this repository. If you intend to publish or share this code, add a LICENSE file (for example, MIT, Apache-2.0, etc.). TODO: add a license.
+No license file is currently included in this repository.
 
-## Author / Maintainer
+## Author
 
-The repository does not include an explicit author or maintainer note in the source. TODO: add author/maintainer and contact information to README or source headers if desired.
-
-## Acknowledgements
-
-This project implements classic scheduling algorithms commonly studied in operating systems courses. No external code or third-party libraries are required.
+SHOJIB-80
 
 ---
+
+This project is designed as an educational tool for students and developers studying CPU scheduling algorithms in operating systems courses.
