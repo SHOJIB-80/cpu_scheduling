@@ -176,7 +176,7 @@ Average Turnaround Time: 5.67
 
 ## License
 
-No license file is currently included in this repository.
+USE IT WITH PERMISSION FREELY
 
 ## Author
 
