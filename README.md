@@ -1,187 +1,179 @@
-# CPU Scheduling Simulator
+# Schedulab
 
-An interactive command-line CPU scheduling simulator implemented in C that demonstrates and compares classic process-scheduling algorithms commonly studied in operating systems courses.
+[Live Preview](#)
+
+This project is a browser-based CPU scheduling simulator designed to visualize and compare classic operating system scheduling algorithms. The application lets users define process workloads, run each algorithm locally in the browser, and inspect timing metrics such as waiting time, turnaround time, response time, and CPU utilization without requiring a backend or database.
 
 ## Overview
 
-This project is an educational tool that allows users to simulate and analyze various CPU scheduling algorithms. The application provides an interactive command-line interface where users can input process details and run multiple scheduling strategies to visualize execution order, calculate performance metrics, and compare algorithm efficiency.
+The system provides an interactive simulation environment for six standard CPU scheduling strategies: FCFS, SJF, SRTF, Round Robin, Priority Scheduling, and Round Robin + Priority. It is built as a static web application that runs entirely on the client side, using JavaScript to perform the scheduling calculations and render the output.
+
+Users can simulate a single algorithm or compare two algorithms against the same dataset to evaluate performance differences. The interface includes editable process inputs, validation checks, a Gantt chart view, and summary statistics for each run.
 
 ## Features
 
-- **Interactive CLI interface** with menu-driven algorithm selection
-- **Six scheduling algorithms**:
-  - FCFS (First-Come, First-Served)
-  - SJF (Shortest Job First) — non-preemptive
-  - SRTF (Shortest Remaining Time First) — preemptive
-  - Round Robin with configurable time quantum
-  - Priority Scheduling — non-preemptive
-  - Round Robin with Priority
-- **Gantt chart visualization** displaying process execution segments and idle times
-- **Per-process metrics** including arrival time, burst time, completion time, waiting time, and turnaround time
-- **Summary statistics** showing average waiting time and average turnaround time
-- **Algorithm comparison** functionality to directly compare average waiting times between any two algorithms
+- Single-algorithm simulation mode
+- Dual-algorithm comparison mode
+- Six scheduling algorithms:
+  - FCFS
+  - SJF
+  - SRTF
+  - Round Robin
+  - Priority Scheduling
+  - Round Robin + Priority
+- Editable process input table with:
+  - Process ID
+  - Arrival time
+  - Burst time
+  - Priority
+- Configurable time quantum for Round Robin modes
+- Gantt chart visualization of execution order and idle periods
+- Per-process metric output:
+  - Completion time
+  - Turnaround time
+  - Waiting time
+  - Response time
+- Summary metrics:
+  - Average waiting time
+  - Average turnaround time
+  - Average response time
+  - CPU utilization
+- Local CSV export of results
+- Browser-only execution with no server dependency
+- Input validation for process count, values, and quantum
 
 ## Technology Stack
 
-| Component | Technology  |
-| --------- | ----------- |
-| Language  | C (C99)     |
-| Compiler  | GCC/Clang   |
-| Build     | Direct compilation |
-| Platform  | POSIX (Linux, macOS, Windows with WSL) |
+| Technology | Purpose |
+|---|---|
+| HTML5 | Application structure and interface layout |
+| CSS | Styling and responsive dashboard layout |
+| JavaScript (ES modules) | Scheduling logic, UI updates, and result rendering |
+| Node.js | Test execution for the repository test suite |
+| Original C implementation | Reference/legacy source for the scheduling algorithms |
 
 ## Project Structure
 
-```
+```text
 cpu_scheduling/
-├── cpu_scheduling_simulator.c    # Main program with all scheduling logic
-└── README.md                     # Documentation
+├── css/
+│   └── styles.css
+├── js/
+│   ├── app.mjs
+│   └── scheduler.mjs
+├── original/
+│   └── cpu_scheduler.c
+├── tests/
+│   └── scheduler.test.mjs
+├── index.html
+├── README.md
+└── ...
 ```
 
-The single C source file contains:
-- `Process` data structure for managing process state
-- Implementations of all six scheduling algorithms
-- Gantt chart generation and display functions
-- Results display with per-process metrics
-- Interactive `main()` loop for user input and algorithm execution
+The main application entry point is `index.html`. The browser logic is split between `js/scheduler.mjs`, which contains the scheduling algorithms and validation rules, and `js/app.mjs`, which renders the interface and handles user interactions. The `original/` directory contains the historical C implementation that the JavaScript version was adapted from. The `tests/` directory contains automated checks for algorithm correctness and input validation.
 
-## Installation and Build
+## System Architecture
 
-Clone the repository and compile:
-
-```bash
-git clone https://github.com/SHOJIB-80/cpu_scheduling.git
-cd cpu_scheduling
-gcc -std=c99 -O2 -Wall cpu_scheduling_simulator.c -o cpu_scheduling_simulator
+```text
+User
+  ↓
+Browser UI
+  ↓
+JavaScript Scheduler
+  ↓
+Local Process Simulation
+  ↓
+Metrics + Gantt Chart Output
 ```
 
-Alternatively, using Clang:
+The application does not use a backend service, database, or external API. The simulation runs entirely in the browser using JavaScript functions that process the process list and generate the output.
 
-```bash
-clang -std=c99 -O2 -Wall cpu_scheduling_simulator.c -o cpu_scheduling_simulator
-```
+## Installation
 
-## Running the Program
+There is no package installation step for the main application because it is a static front-end project.
 
-Start the simulator:
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/SHOJIB-80/cpu_scheduling.git
+   cd cpu_scheduling
+   ```
 
-```bash
-./cpu_scheduling_simulator
-```
+2. Open `index.html` directly in a browser, or serve the project locally:
 
-The application displays a main menu with eight options:
+   ```bash
+   python3 -m http.server 8000
+   ```
 
-```
-1. FCFS
-2. SJF (Non-Preemptive)
-3. SRTF (Preemptive)
-4. Round Robin
-5. Priority Scheduling
-6. Round Robin with Priority
-7. Compare Two Algorithms
-8. Exit
-```
+3. Visit:
+   ```text
+   http://localhost:8000
+   ```
+
+## Configuration
+
+The application does not require environment variables, database configuration, or a `.env` file. The simulator uses the process data entered in the UI and the time quantum value configured for Round Robin-based algorithms.
+
+The scheduling rules and validation logic are defined in `js/scheduler.mjs`, and the interface behavior is handled in `js/app.mjs`.
+
+## Running the Project
+
+1. Start a local web server from the project root, if needed.
+2. Open the application in a browser.
+3. Select the desired simulation mode.
+4. Choose a scheduling algorithm or compare two algorithms.
+5. Edit the process set and time quantum.
+6. Run the simulation to view the results.
+
+The project is ready to use without any additional setup beyond a browser and, optionally, a simple local static server.
 
 ## Usage
 
-### Running a Single Algorithm
+### Single Algorithm Mode
 
-1. Select an algorithm (1–6) from the main menu
-2. Enter the number of processes (1–50)
-3. For each process, provide:
-   - Burst time (positive integer > 0)
-   - Arrival time (non-negative integer ≥ 0)
-   - Priority value (integer; lower values indicate higher priority)
-4. For Round Robin variants, enter the time quantum (positive integer > 0)
-5. The program displays the Gantt chart and per-process metrics
+1. Choose a scheduling strategy from the algorithm list.
+2. Define the process workload with arrival time, burst time, and priority.
+3. Set the quantum when the selected algorithm requires it.
+4. Run the simulation.
+5. Review the Gantt chart and metrics.
 
-### Comparing Algorithms
+### Comparison Mode
 
-1. Select option 7 from the main menu
-2. Input process details as above
-3. Select the first algorithm to run
-4. Select the second algorithm to run
-5. If either algorithm requires a time quantum, enter it
-6. The program runs both algorithms and displays a side-by-side comparison of average waiting times, indicating which algorithm performed better
+1. Switch to the comparison workflow.
+2. Select two algorithms.
+3. Enter the same process dataset for both.
+4. Run the comparison.
+5. Review the average waiting time and other relevant metrics for each algorithm.
 
-### Example Interaction
+The application is designed to compare each algorithm against the same process set to highlight differences in scheduling behavior.
 
-```
-Enter your choice: 1
-Enter number of processes: 3
+## Testing
 
-Process 1 burst time: 5
-Process 1 arrival time: 0
-Process 1 priority (lower number = higher priority): 2
+The repository includes a Node-based verification suite in `tests/scheduler.test.mjs`. The tests validate:
 
-Process 2 burst time: 3
-Process 2 arrival time: 2
-Process 2 priority (lower number = higher priority): 1
+- Correct algorithm IDs and total count
+- FCFS, SJF, SRTF, RR, Priority, and RR+Priority behavior
+- Idle-time handling
+- Stability of input ordering
+- Validation for invalid process data
+- Metric and Gantt-chart consistency
 
-Process 3 burst time: 2
-Process 3 arrival time: 4
-Process 3 priority (lower number = higher priority): 3
+Run the tests using:
+
+```bash
+node --test tests/scheduler.test.mjs
 ```
 
-The output includes a Gantt chart and results table:
+## Known Limitations
 
-```
-Gantt Chart:
-| P1    | P2    | P3    |
-0       5       8       10
-
-PID  Arr  Burst  Comp  Wait  Turn
-1    0    5      5     0     5
-2    2    3      8     3     6
-3    4    2      10    4     6
-
-Average Waiting Time: 2.33
-Average Turnaround Time: 5.67
-```
-
-## Input Specifications
-
-- **Number of processes**: Integer from 1 to 50
-- **Burst time**: Positive integer (> 0)
-- **Arrival time**: Non-negative integer (≥ 0)
-- **Priority**: Integer value (lower number = higher priority)
-- **Time Quantum**: Positive integer (> 0), required for Round Robin and Round Robin with Priority
-
-**Note:** The program performs basic validation for positive burst times and non-negative arrival times. Non-integer input is not validated and may cause undefined behavior.
-
-## Algorithm Details
-
-- **FCFS**: Processes are executed in the order of their arrival times
-- **SJF (Non-Preemptive)**: Among available processes, the one with the smallest burst time is selected
-- **SRTF (Preemptive)**: Scheduling decisions occur each time unit, selecting the process with the smallest remaining time
-- **Round Robin**: Processes are executed in cycles; each process runs for at most the time quantum before being re-queued
-- **Priority Scheduling (Non-Preemptive)**: Among available processes, the one with the lowest priority value is selected
-- **Round Robin with Priority**: Processes with the best (lowest) priority value are selected and cycled through with the time quantum constraint
-
-## Constraints and Limitations
-
-- Maximum of 50 processes per simulation
-- Maximum of 5000 Gantt chart segments
-- Non-integer input is not validated and may result in undefined behavior
-- No automated test suite included
-- Results are output to the console only; no export or persistence functionality
-- No command-line arguments; program is purely interactive
-- Single-threaded, synchronous execution
-
-## Requirements
-
-- C compiler supporting C99 standard (GCC or Clang)
-- POSIX-compatible terminal environment (Linux, macOS, WSL on Windows)
-- Standard C library (no external dependencies)
+- The project is built as a client-side simulator and does not persist data.
+- There is no backend service, authentication flow, or database.
+- The application is intended for educational and visualization purposes rather than production scheduling.
+- The original C implementation is included as a reference but is not the active runtime for the browser app.
 
 ## License
 
-USE IT WITH PERMISSION FREELY
+This repository does not currently include a license file. Add a license before public distribution or reuse outside the project context.
 
 ## Author
 
 SHOJIB-80
-
----
-
-This project is designed as an educational tool for students and developers studying CPU scheduling algorithms in operating systems courses.
