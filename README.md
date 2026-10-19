@@ -1,6 +1,6 @@
 # Schedulab
 
-[Live Preview](#)
+[Live Preview](https://shojib-80.github.io/cpu_scheduling/)
 
 This project is a browser-based CPU scheduling simulator designed to visualize and compare classic operating system scheduling algorithms. The application lets users define process workloads, run each algorithm locally in the browser, and inspect timing metrics such as waiting time, turnaround time, response time, and CPU utilization without requiring a backend or database.
 
@@ -172,8 +172,8 @@ node --test tests/scheduler.test.mjs
 
 ## License
 
-This repository does not currently include a license file. Add a license before public distribution or reuse outside the project context.
+This repository does not currently include a license file. licence under SHOJIB-80.
 
 ## Author
 
-SHOJIB-80
+MD Sirajul Islam
